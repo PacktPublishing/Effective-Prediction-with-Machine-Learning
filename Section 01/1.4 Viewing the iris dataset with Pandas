@@ -1,0 +1,10 @@
+//  Viewing the iris dataset with pandas
+
+import pandas as pd
+iris_df = pd.DataFrame(iris.data, columns = iris.feature_names)
+iris_df['sepal length (cm)'].hist(bins=30)
+for class_number in np.unique(iris.target):
+	plt.figure(1)
+	iris_df['sepal length (cm)'].iloc[np.where(iris.target ==class_number)[0]].hist(bins=30)
+	
+np.where(iris.target== class_number)[0]

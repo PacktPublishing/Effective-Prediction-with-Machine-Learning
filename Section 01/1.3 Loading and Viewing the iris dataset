@@ -1,0 +1,16 @@
+import numpy as np #Load the numpy library for fast array computations
+import pandas as pd #Load the pandas data-analysis library
+import matplotlib.pyplot as plt #Load the pyplot visualization library
+from sklearn import datasets
+iris = datasets.load_iris()
+from sklearn import datasets #Import datasets module from scikit-learn
+diabetes = datasets.load_diabetes()
+digits = datasets.load_digits()
+iris.data
+iris.data.shape
+iris.data[0]
+iris. feature_names
+iris.target
+iris.target.shape
+iris.target_names
+iris.target[0]

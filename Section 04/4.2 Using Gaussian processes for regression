@@ -1,0 +1,34 @@
+from sklearn.datasets import load_boston
+boston = load_boston()
+boston_X = boston.data
+boston_y = boston.target
+train_set = np.random.choice([True, False], len(boston_y),p=[.75, .25])
+
+sklearn.gaussian_process import GaussianProcessRegressor
+gpr = GaussianProcessRegressor()
+gpr
+
+from sklearn.gaussian_process.kernels import RBF, ConstantKernel as CK
+mixed_kernel = kernel = CK(1.0, (1e-4, 1e4)) * RBF(10, (1e-4, 1e4))
+
+gpr = GaussianProcessRegressor(alpha=5,n_restarts_optimizer=20,kernel = mixed_kernel)
+gpr.fit(boston_X[train_set],boston_y[train_set])
+
+test_preds = gpr.predict(boston_X[~train_set])
+
+from sklearn.model_selection import cross_val_predict
+from matplotlib import pyplot as plt
+
+f, ax = plt.subplots(figsize=(10, 7), nrows=3)
+f.tight_layout()
+
+ax[0].plot(range(len(test_preds)), test_preds,label='Predicted Values');
+ax[0].plot(range(len(test_preds)),
+boston_y[~train_set],label='Actual Values');
+ax[0].set_title("Predicted vs Actuals")
+ax[0].legend(loc='best')
+ax[1].plot(range(len(test_preds)),test_preds
+boston_y[~train_set]);
+ax[1].set_title("Plotted Residuals")
+ax[2].hist(test_preds - boston_y[~train_set]);
+ax[2].set_title("Histogram of Residuals")

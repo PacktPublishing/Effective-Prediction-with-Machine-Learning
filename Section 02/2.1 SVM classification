@@ -1,0 +1,37 @@
+X = iris.data[:, :2]
+y = iris.target
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.25, random_state=1)
+
+from sklearn.svm import SVC
+clf = SVC(kernel='linear',random_state=1)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+
+from sklearn.metrics import accuracy_score
+accuracy_score(y_test,y_pred)
+
+from sklearn.linear_model import LogisticRegression
+
+import matplotlib.pyplot as plt
+from sklearn import datasets
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+X = iris.data[:, :2] #load the iris data
+y = iris.target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25,random_state=1)
+
+#train the model
+clf = LogisticRegression(random_state = 1)
+clf.fit(X_train, y_train)
+
+#predict with Logistic Regression
+y_pred = clf.predict(X_test)
+
+#examine the model accuracy
+accuracy_score(y_test,y_pred)

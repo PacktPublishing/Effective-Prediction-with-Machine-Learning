@@ -1,0 +1,36 @@
+from sklearn.datasets import load_iris
+iris = load_iris()
+iris_X = iris.data
+y = iris.target
+
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE, MDS, Isomap
+#Load visualization library
+import matplotlib.pyplot as plt
+
+iris_pca = PCA(n_components = 2).fit_transform(iris_X)
+iris_tsne = TSNE(learning_rate=200).fit_transform(iris_X)
+iris_MDS = MDS(n_components = 2).fit_transform(iris_X)
+iris_ISO = Isomap(n_components = 2).fit_transform(iris_X)
+
+plt.figure(figsize=(20, 10))
+plt.subplot(221)
+plt.title('PCA')
+plt.scatter(iris_pca [:, 0], iris_pca [:, 1], c=y)
+
+plt.subplot(222)
+plt.scatter(iris_tsne[:, 0], iris_tsne[:, 1], c=y)
+plt.title('TSNE')
+
+plt.subplot(223)
+plt.scatter(iris_MDS[:, 0], iris_MDS[:, 1], c=y)
+plt.title('MDS')
+
+plt.subplot(224)
+plt.scatter(iris_ISO[:, 0], iris_ISO[:, 1], c=y)
+plt.title('ISO')
+
+iris_pca_then_tsne = TSNE(learning_rate=200).fit_transform(iris_pca)
+plt.figure(figsize=(10, 7))
+plt.scatter(iris_pca_then_tsne[:, 0], iris_pca_then_tsne[:, 1], c=y)
+plt.title("PCA followed by TSNE")

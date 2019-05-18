@@ -1,0 +1,28 @@
+from sklearn.datasets import load_iris
+iris = load_iris()
+iris_X = iris.data
+y = iris.target
+
+X_train = iris_X[::2]
+X_test = iris_X[1::2]
+y_train = y[::2]
+y_test = y[1::2]
+
+from sklearn.decomposition import DictionaryLearning
+
+dl = DictionaryLearning(3)
+
+transformed = dl.fit_transform(X_train)
+transformed[:5]
+
+test_transform = dl.transform(X_test)
+
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+fig = plt.figure(figsize=(14,7))
+ax = fig.add_subplot(121, projection='3d')
+ax.scatter(transformed[:,0],transformed[:,1],transformed[:,2],c=y_train,marker = '^')
+ax.set_title("Training Set")
+ax2 = fig.add_subplot(122, projection='3d')
+ax2.scatter(test_transform[:,0],test_transform[:,1],test_transform[:,2],c=y_test,marker = '^')
+ax2.set_title("Testing Set")

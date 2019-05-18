@@ -1,0 +1,51 @@
+from sklearn import datasets
+import numpy as np
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+
+from sklearn import preprocessing
+cat_encoder = preprocessing.OneHotEncoder()
+cat_encoder.fit_transform(y.reshape(-1,1)).toarray()[:5]
+
+cat_encoder.transform(np.ones((3, 1))).toarray()
+
+from sklearn.linear_model import Ridge
+ridge_inst = Ridge()
+
+from sklearn.multioutput import MultiOutputRegressor
+multi_ridge = MultiOutputRegressor(ridge_inst, n_jobs=-1)
+
+from sklearn import preprocessing
+cat_encoder = preprocessing.OneHotEncoder()
+y_multi = cat_encoder.fit_transform(y.reshape(-1,1)).toarray()
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y_multi, stratify=y,random_state= 7)
+
+multi_ridge.fit(X_train, y_train)
+MultiOutputRegressor(estimator=Ridge(alpha=1.0, copy_X=True,fit_intercept=True, max_iter=None,normalize=False, random_state=None, solver='auto', tol=0.001),n_jobs=-1)
+
+y_multi_pre = multi_ridge.predict(X_test)
+y_multi_pre[:5]
+
+from sklearn import preprocessing
+y_multi_pred = preprocessing.binarize(y_multi_pre,threshold=0.5)
+y_multi_pred[:5]
+
+from sklearn.metrics import roc_auc_score
+roc_auc_score(y_test, y_multi_pre)
+
+from sklearn.metrics import accuracy_score
+
+print ("Multi-Output Scores for the Iris Flowers: ")
+
+for column_number in range(0,3):
+	print ("Accuracy score of flower " +str(column_number),accuracy_score(y_test[:,column_number],y_multi_pred[:,column_number]))
+	print ("AUC score of flower " +str(column_number),roc_auc_score(y_test[:,column_number],y_multi_pre[:,column_number]))
+	print ("")
+	
+from sklearn.feature_extraction import DictVectorizer
+dv = DictVectorizer()
+my_dict = [{'species': iris.target_names[i]} for i in y]
+dv.fit_transform(my_dict).toarray()[:5]

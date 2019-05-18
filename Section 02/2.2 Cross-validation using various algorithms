@@ -1,0 +1,73 @@
+from sklearn.model_selection import train_test_split
+X_train_2, X_test_2, y_train_2, y_test_2 = train_test_split(X_train,y_train, test_size=0.25, random_state=1)
+
+from sklearn import datasets
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+#load the classifying models
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+
+iris = datasets.load_iris()
+X = iris.data[:, :2] #load the first two features of the iris data
+y = iris.target #load the target of the iris data
+
+#split the whole set one time
+#Note random state is 7 now
+X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.25, random_state=7)
+
+#split the training set into parts
+X_train_2, X_test_2, y_train_2, y_test_2 =train_test_split(X_train, y_train, test_size=0.25, random_state=7)
+
+svc_clf = SVC(kernel = 'linear',random_state = 7)
+svc_clf.fit(X_train_2, y_train_2)
+
+lr_clf = LogisticRegression(random_state = 7).fit(X_train_2,y_train_2)
+
+svc_pred = svc_clf.predict(X_test_2)
+lr_pred = lr_clf.predict(X_test_2)
+
+print("Accuracy of SVC:",accuracy_score(y_test_2,svc_pred))
+print("Accuracy of LR:",accuracy_score(y_test_2,lr_pred))
+
+print("Accuracy of SVC on original Test Set:",accuracy_score(y_test, svc_clf.predict(X_test)))
+
+from sklearn.model_selection import cross_val_score
+
+svc_scores = cross_val_score(svc_clf, X_train, y_train, cv=4)
+svc_scores
+
+print("Average SVC scores: ", svc_scores.mean())
+print("Standard Deviation of SVC scores: ", svc_scores.std())
+
+lr_scores = cross_val_score(lr_clf, X_train, y_train, cv=4)
+print("Average SVC scores: ", lr_scores.mean())
+print("Standard Deviation of SVC scores: ", lr_scores.std())
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y)
+
+svc_scores = cross_val_score(svc_clf, X_train, y_train, cv=4)
+print("Average SVC scores: " , svc_scores.mean())
+print("Standard Deviation of SVC scores: ", svc_scores.std())
+print("Score on Final Test Set:", accuracy_score(y_test,svc_clf.predict(X_test)))
+
+
+from sklearn.neighbors import KNeighborsClassifier
+X_train, X_test, y_train, y_test = train_test_split(X, y,stratify=y, random_state = 0)
+
+from sklearn.model_selection import cross_val_score
+knn_3_clf = KNeighborsClassifier(n_neighbors = 3)
+knn_5_clf = KNeighborsClassifier(n_neighbors = 5)
+knn_3_scores = cross_val_score(knn_3_clf, X_train, y_train, cv=10)
+knn_5_scores = cross_val_score(knn_5_clf, X_train, y_train, cv=10)
+
+print("knn_3 mean scores: ", knn_3_scores.mean(), "knn_3 std:",knn_3_scores.std())
+print("knn_5 mean scores: ", knn_5_scores.mean(), " knn_5 std:",knn_5_scores.std())
+
+all_scores = []
+for n_neighbors in range(3,9,1):
+	knn_clf = KNeighborsClassifier(n_neighbors = n_neighbors)
+	all_scores.append((n_neighbors, cross_val_score(knn_clf, X_train,y_train, cv=10).mean()))
+sorted(all_scores, key = lambda x:x[1], reverse = True)

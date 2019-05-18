@@ -1,0 +1,32 @@
+from sklearn import preprocessing
+import numpy as np # we'll need it later
+
+from sklearn.datasets import load_boston
+boston = load_boston()
+X,y = boston.data, boston.target
+
+X[:, :3].mean(axis=0) #mean of the first 3 features
+X[:, :3].std(axis=0)
+
+X_2 = preprocessing.scale(X[:, :3])
+X_2.mean(axis=0)
+X_2.std(axis=0)
+
+pd.Series(X[:,2]).hist(bins=50)
+pd.Series(preprocessing.scale(X[:, 2])).hist(bins=50)
+
+my_scaler = preprocessing.StandardScaler()
+my_scaler.fit(X[:, :3])
+my_scaler.transform(X[:, :3]).mean(axis=0)
+
+my_minmax_scaler = preprocessing.MinMaxScaler()
+my_minmax_scaler.fit(X[:, :3])
+my_minmax_scaler.transform(X[:, :3]).max(axis=0)
+
+my_minmax_scaler.transform(X[:, :3]).min(axis=0)
+
+my_odd_scaler = preprocessing.MinMaxScaler(feature_range=(-3.14, 3.14))
+
+normalized_X = preprocessing.normalize(X[:, :3])
+
+(normalized_X * normalized_X).sum(axis = 1)

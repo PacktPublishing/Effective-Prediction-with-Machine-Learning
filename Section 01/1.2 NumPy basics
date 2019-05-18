@@ -1,0 +1,38 @@
+import numpy as np
+np.arange(10)
+array_1 = np.arange(10)
+array_1.shape
+array_1.ndim
+array_1.reshape((5,2))
+array_1 = array_1.reshape((5,2))
+array_1.ndim
+array_1 + 1
+array_2 = np.arange(10)
+array_2 * array_2
+array_2 = array_2 ** 2 #Note that this is equivalent to array_2 *
+array_2
+array_2 = array_2.reshape((5,2))
+array_2
+array_1 = array_1 + 1
+array_1
+array_1 + array_2
+np.zeros((5,2))
+np.ones((5,2), dtype = np.int)
+np.empty((5,2), dtype = np.float)
+array_1[0,0] #Finds value in first row and first column.
+array_1[0,: ]
+array_1[:, 0]
+array_1[2:5, :]
+array_1[2:5,0]
+array_1 > 5
+array_1[array_1 > 5]array_1[array_1 > 5]
+array_1
+array_1.sum()
+array_1.sum(axis = 1)
+array_1.sum(axis = 0)
+array_1.mean(axis = 0)
+array_3 = np.array([np.nan, 0, 1, 2, np.nan])
+np.isnan(array_3)
+array_3[~np.isnan(array_3)]
+array_3[np.isnan(array_3)] = 0
+array_3
